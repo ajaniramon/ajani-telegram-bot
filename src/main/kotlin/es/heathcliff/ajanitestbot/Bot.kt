@@ -54,10 +54,10 @@ class AjaniBot(private val tcpService: TcpService,
 
                     bot.sendMessage(chatId = message.chat.id, text = response)
                 } catch (e: IOException) {
-                    println(e)
+                    logger.error(e)
                     bot.sendMessage(chatId = message.chat.id, text = "Network error.")
                 } catch (e: Throwable) {
-                    println(e)
+                    logger.error(e)
                     bot.sendMessage(
                         chatId = message.chat.id,
                         text = "An error ocurred. Check your syntax (or the log)."
@@ -77,7 +77,7 @@ class AjaniBot(private val tcpService: TcpService,
                     }
 
                 } catch (e: Throwable) {
-                    println(e)
+                    logger.error(e)
                     bot.sendMessage(
                         chatId = message.chat.id,
                         text = "An error ocurred. Check your syntax (or the log)."
