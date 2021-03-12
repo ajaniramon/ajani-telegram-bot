@@ -22,7 +22,7 @@ fun Application.module() {
 }
 
 fun runApi() {
-    embeddedServer(Netty, host = "127.0.0.1", port = 8080) {
+    embeddedServer(Netty, host = "127.0.0.1", port = System.getProperty("ktor.port").toInt()) {
         module()
     }.start(wait = false)
 }
