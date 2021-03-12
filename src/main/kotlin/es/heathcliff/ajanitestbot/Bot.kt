@@ -16,17 +16,19 @@ import es.heathcliff.ajanitestbot.service.InvalidCommandUsageException
 import es.heathcliff.ajanitestbot.service.TcpService
 import es.heathcliff.ajanitestbot.util.toHttpCommand
 import es.heathcliff.ajanitestbot.util.toTcpCommand
+import org.apache.logging.log4j.LogManager.getLogger
 import java.io.IOException
 
 class AjaniBot(private val tcpService: TcpService,
                private val httpService: HttpService,
                token: String = System.getenv(BOT_API_KEY)) {
+    private val logger = getLogger()
     private val bot: Bot = bot {
         this.token = token
 
         dispatch {
             message {
-                println(this.message.text)
+                logger.info("Received message: ${this.message.text}")
             }
 
             command(START_COMMAND) {
@@ -48,6 +50,8 @@ class AjaniBot(private val tcpService: TcpService,
                     val request = message.text!!.toTcpCommand()
                     val response = tcpService.send(request)
 
+                    logger.info("Received response for request $request: $response")
+
                     bot.sendMessage(chatId = message.chat.id, text = response)
                 } catch (e: IOException) {
                     println(e)
@@ -65,6 +69,8 @@ class AjaniBot(private val tcpService: TcpService,
                 try {
                     val request = message.text!!.toHttpCommand()
                     val response = httpService.send(request)
+
+                    logger.info("Received response for $request: $response")
 
                     response.chunked(MAX_TELEGRAM_MESSAGE_LENGTH).forEach {
                         bot.sendMessage(chatId = message.chat.id, text = it)
