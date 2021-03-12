@@ -22,7 +22,7 @@ import java.io.IOException
 class AjaniBot(private val tcpService: TcpService,
                private val httpService: HttpService,
                token: String = System.getenv(BOT_API_KEY)) {
-    private val logger = getLogger()
+    private val logger = getLogger(this::class.java)
     private val bot: Bot = bot {
         this.token = token
 
