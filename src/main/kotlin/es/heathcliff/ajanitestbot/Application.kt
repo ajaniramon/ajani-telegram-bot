@@ -22,7 +22,7 @@ fun Application.module() {
 }
 
 fun runApi() {
-    embeddedServer(Netty, port = 80) {
+    embeddedServer(Netty, host = "127.0.0.1", port = 8080) {
         module()
     }.start(wait = false)
 }
